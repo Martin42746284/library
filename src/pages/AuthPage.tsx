@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authService } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,9 +12,11 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function AuthPage() {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [regUsername, setRegUsername] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
+  const [showRegPassword, setShowRegPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { setUser } = useAuth();
@@ -84,22 +86,36 @@ export default function AuthPage() {
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
                     <Label htmlFor="login-username">Nom d'utilisateur</Label>
-                    <Input 
-                      id="login-username" 
-                      value={loginUsername} 
-                      onChange={e => setLoginUsername(e.target.value)} 
-                      required 
+                    <Input
+                      id="login-username"
+                      value={loginUsername}
+                      onChange={e => setLoginUsername(e.target.value)}
+                      required
                     />
                   </div>
                   <div>
                     <Label htmlFor="login-password">Mot de passe</Label>
-                    <Input 
-                      id="login-password" 
-                      type="password" 
-                      value={loginPassword} 
-                      onChange={e => setLoginPassword(e.target.value)} 
-                      required 
-                    />
+                    <div className="relative">
+                      <Input
+                        id="login-password"
+                        type={showLoginPassword ? "text" : "password"}
+                        value={loginPassword}
+                        onChange={e => setLoginPassword(e.target.value)}
+                        required
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowLoginPassword(!showLoginPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {showLoginPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Connexion..." : "Se connecter"}
@@ -113,33 +129,47 @@ export default function AuthPage() {
                 <form onSubmit={handleRegister} className="space-y-4">
                   <div>
                     <Label htmlFor="reg-username">Nom d'utilisateur</Label>
-                    <Input 
-                      id="reg-username" 
-                      value={regUsername} 
-                      onChange={e => setRegUsername(e.target.value)} 
-                      required 
+                    <Input
+                      id="reg-username"
+                      value={regUsername}
+                      onChange={e => setRegUsername(e.target.value)}
+                      required
                     />
                   </div>
                   <div>
                     <Label htmlFor="reg-email">Email</Label>
-                    <Input 
-                      id="reg-email" 
-                      type="email" 
-                      value={regEmail} 
-                      onChange={e => setRegEmail(e.target.value)} 
-                      required 
+                    <Input
+                      id="reg-email"
+                      type="email"
+                      value={regEmail}
+                      onChange={e => setRegEmail(e.target.value)}
+                      required
                     />
                   </div>
                   <div>
                     <Label htmlFor="reg-password">Mot de passe</Label>
-                    <Input 
-                      id="reg-password" 
-                      type="password" 
-                      value={regPassword} 
-                      onChange={e => setRegPassword(e.target.value)} 
-                      required 
-                      minLength={6} 
-                    />
+                    <div className="relative">
+                      <Input
+                        id="reg-password"
+                        type={showRegPassword ? "text" : "password"}
+                        value={regPassword}
+                        onChange={e => setRegPassword(e.target.value)}
+                        required
+                        minLength={6}
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowRegPassword(!showRegPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {showRegPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Création..." : "S'inscrire"}
