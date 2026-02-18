@@ -26,12 +26,14 @@ export default function AuthPage() {
       const response = await authService.login(loginUsername, loginPassword);
       setUser(response.user);
       toast({ title: "Connexion réussie", description: "Vous êtes maintenant connecté." });
-      window.location.href = "/";
+      // Redirect based on user role
+      const redirectPath = response.user.role === 'ADMIN' ? '/admin/books' : '/';
+      window.location.href = redirectPath;
     } catch (error: any) {
-      toast({ 
-        title: "Erreur de connexion", 
-        description: error.response?.data?.message || "Veuillez vérifier vos identifiants et réessayer.", 
-        variant: "destructive" 
+      toast({
+        title: "Erreur de connexion",
+        description: error.response?.data?.message || "Veuillez vérifier vos identifiants et réessayer.",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -45,12 +47,14 @@ export default function AuthPage() {
       const response = await authService.register(regUsername, regEmail, regPassword);
       setUser(response.user);
       toast({ title: "Inscription réussie", description: "Votre compte a été créé avec succès." });
-      window.location.href = "/";
+      // Redirect based on user role (new users are always USER role)
+      const redirectPath = response.user.role === 'ADMIN' ? '/admin/books' : '/';
+      window.location.href = redirectPath;
     } catch (error: any) {
-      toast({ 
-        title: "Erreur d'inscription", 
-        description: error.response?.data?.message || "Veuillez vérifier vos informations et réessayer.", 
-        variant: "destructive" 
+      toast({
+        title: "Erreur d'inscription",
+        description: error.response?.data?.message || "Veuillez vérifier vos informations et réessayer.",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);

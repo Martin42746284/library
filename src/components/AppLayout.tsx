@@ -7,13 +7,12 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, isAdmin, signOut } = useAuth();
   const location = useLocation();
 
-  const navItems = [
+  const navItems = isAdmin ? [
+    { to: "/admin/books", label: "Gérer les Livres", icon: Library },
+    { to: "/admin/stats", label: "Statistiques", icon: BarChart3 },
+  ] : [
     { to: "/", label: "Catalogue", icon: BookOpen },
     { to: "/borrowings", label: "Mes Emprunts", icon: BookCopy },
-    ...(isAdmin ? [
-      { to: "/admin/books", label: "Gérer les Livres", icon: Library },
-      { to: "/admin/stats", label: "Statistiques", icon: BarChart3 },
-    ] : []),
   ];
 
   return (

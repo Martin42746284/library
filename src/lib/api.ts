@@ -125,7 +125,7 @@ export const getCurrentUser = (): User | null => {
 // Fonction pour vérifier si l'utilisateur est admin
 export const isUserAdmin = (): boolean => {
   const user = getCurrentUser();
-  return user?.role === 'admin' || false;
+  return user?.role === 'ADMIN' || false;
 };
 
 //Service User
@@ -192,6 +192,14 @@ export const statsService = {
     getTopUsers: async (): Promise<any> => {
         const response = await apiClient.get('/stats/users');
         return response.data.data || response.data;
+    },
+    getTotalBorrowings: async (): Promise<number> => {
+        const response = await apiClient.get('/stats/borrowings/total');
+        return response.data.data?.total || 0;
+    },
+    getPopularBooksCount: async (): Promise<number> => {
+        const response = await apiClient.get('/stats/popular-books');
+        return response.data.data?.count || 0;
     }
 };
 
